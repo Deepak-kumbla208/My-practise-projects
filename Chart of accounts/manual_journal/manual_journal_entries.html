@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Manual Journal Entry</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <style>
+      :root {
+        --primary-color: #3a86ff;
+        --secondary-color: #ff006e;
+        --light-gray: #f8f9fa;
+        --border-color: #dee2e6;
+        --success-color: #10b981;
+      }
+
+      body {
+        background-color: #f5f7fb;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        color: #334155;
+      }
+
+      .header {
+        background: linear-gradient(135deg, #1e3a8a 0%, #3a86ff 100%);
+        color: white;
+        padding: 20px 0;
+        margin-bottom: 30px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+
+      .card {
+        border-radius: 10px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        margin-bottom: 25px;
+        border: none;
+        overflow: hidden;
+      }
+
+      .card-header {
+        background-color: white;
+        border-bottom: 2px solid var(--border-color);
+        font-weight: 600;
+        padding: 15px 20px;
+        color: var(--primary-color);
+      }
+
+      .form-section {
+        background-color: white;
+        padding: 25px;
+        border-radius: 10px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        margin-bottom: 20px;
+      }
+
+      .section-title {
+        font-size: 1.25rem;
+        font-weight: 600;
+        margin-bottom: 15px;
+        color: var(--primary-color);
+        display: flex;
+        align-items: center;
+      }
+
+      .section-title i {
+        background-color: rgba(58, 134, 255, 0.1);
+        width: 36px;
+        height: 36px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 12px;
+        color: var(--primary-color);
+      }
+
+      .form-label {
+        font-weight: 600;
+        color: #334155;
+        margin-bottom: 8px;
+      }
+
+      .form-control,
+      .form-select {
+        border-radius: 8px;
+        padding: 10px 15px;
+        border: 2px solid #e2e8f0;
+        transition: all 0.3s ease;
+      }
+
+      .form-control:focus,
+      .form-select:focus {
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 0.25rem rgba(58, 134, 255, 0.25);
+      }
+
+      .required-star {
+        color: #ef4444;
+        margin-left: 4px;
+      }
+
+      .btn-container {
+        display: flex;
+        justify-content: flex-end;
+        gap: 15px;
+        margin-top: 25px;
+        padding-top: 20px;
+        border-top: 1px solid #e2e8f0;
+      }
+
+      .btn-cancel {
+        background-color: #f1f5f9;
+        color: #64748b;
+        border: none;
+        padding: 10px 25px;
+        border-radius: 8px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+      }
+
+      .btn-cancel:hover {
+        background-color: #e2e8f0;
+      }
+
+      .btn-save {
+        background-color: var(--primary-color);
+        color: white;
+        border: none;
+        padding: 10px 25px;
+        border-radius: 8px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+      }
+
+      .btn-save:hover {
+        background-color: #2563eb;
+        transform: translateY(-2px);
+      }
+
+      .info-text {
+        color: #64748b;
+        font-size: 0.9rem;
+        margin-bottom: 20px;
+      }
+
+      .form-group {
+        margin-bottom: 20px;
+      }
+
+      .app-footer {
+        background-color: #f1f5f9;
+        padding: 15px 0;
+        color: #64748b;
+        font-size: 0.9rem;
+        margin-top: 30px;
+      }
+
+      .container-narrow {
+        max-width: 1000px;
+        margin: 0 auto;
+      }
+
+      .back-link {
+        display: inline-flex;
+        align-items: center;
+        color: #64748b;
+        text-decoration: none;
+        margin-bottom: 20px;
+        transition: color 0.3s ease;
+      }
+
+      .back-link:hover {
+        color: var(--primary-color);
+      }
+
+      .back-link i {
+        margin-right: 8px;
+        transition: transform 0.3s ease;
+      }
+
+      .back-link:hover i {
+        transform: translateX(-3px);
+      }
+
+      .journal-table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+      }
+
+      .journal-table thead th {
+        background-color: #f8fafc;
+        padding: 12px 15px;
+        font-weight: 600;
+        text-align: left;
+        border-bottom: 2px solid #e2e8f0;
+      }
+
+      .journal-table tbody td {
+        padding: 12px 15px;
+        background-color: white;
+        border-bottom: 1px solid #e2e8f0;
+      }
+
+      .journal-table tbody tr:last-child td {
+        border-bottom: none;
+      }
+
+      .currency-input {
+        position: relative;
+      }
+
+      .currency-input .input-group-text {
+        background-color: #f8fafc;
+        border: 2px solid #e2e8f0;
+        border-right: none;
+        border-radius: 8px 0 0 8px;
+      }
+
+      .currency-input .form-control {
+        border-left: none;
+        border-radius: 0 8px 8px 0;
+      }
+
+      .add-line-btn {
+        background-color: #f1f5f9;
+        border: 2px dashed #cbd5e1;
+        color: #64748b;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 10px;
+        border-radius: 8px;
+        margin-top: 15px;
+        transition: all 0.3s ease;
+        cursor: pointer;
+      }
+
+      .add-line-btn:hover {
+        background-color: #e2e8f0;
+        border-color: #94a3b8;
+      }
+
+      .note-card {
+        background-color: #f0f9ff;
+        border-left: 4px solid #0ea5e9;
+        border-radius: 0 8px 8px 0;
+        padding: 15px;
+        margin-top: 20px;
+      }
+
+      .note-card h6 {
+        color: #0c4a6e;
+        font-weight: 600;
+        margin-bottom: 5px;
+      }
+
+      .note-card a {
+        color: #0ea5e9;
+        text-decoration: none;
+        font-weight: 500;
+      }
+
+      .note-card a:hover {
+        text-decoration: underline;
+      }
+
+      .attachment-area {
+        border: 2px dashed #cbd5e1;
+        border-radius: 8px;
+        padding: 30px;
+        text-align: center;
+        background-color: #f8fafc;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .attachment-area:hover {
+        border-color: var(--primary-color);
+        background-color: #f0f7ff;
+      }
+
+      .attachment-area i {
+        font-size: 2rem;
+        color: #94a3b8;
+        margin-bottom: 10px;
+      }
+
+      .attachment-area p {
+        margin-bottom: 0;
+        color: #64748b;
+      }
+
+      .help-card {
+        background-color: #f0fdf4;
+        border-left: 4px solid var(--success-color);
+        border-radius: 0 8px 8px 0;
+        padding: 20px;
+        margin-top: 30px;
+      }
+
+      .help-card h5 {
+        display: flex;
+        align-items: center;
+        color: #065f46;
+        margin-bottom: 15px;
+      }
+
+      .help-card h5 i {
+        background-color: rgba(16, 185, 129, 0.1);
+        width: 36px;
+        height: 36px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 12px;
+        color: var(--success-color);
+      }
+
+      .help-card p {
+        color: #047857;
+        margin-bottom: 0;
+      }
+
+      .row-gap {
+        row-gap: 20px;
+      }
+
+      .debit-credit-input {
+        position: relative;
+      }
+
+      .debit-credit-input .form-control {
+        padding-left: 30px;
+        text-align: right;
+      }
+
+      .debit-credit-input::before {
+        content: "$";
+        position: absolute;
+        left: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #64748b;
+        font-weight: 500;
+      }
+
+      .number-ref-group {
+        display: flex;
+        gap: 15px;
+      }
+
+      .number-ref-group .form-group {
+        flex: 1;
+        margin-bottom: 0;
+      }
+
+      /* Total rows styling */
+      .total-row {
+        background-color: #f8fafc;
+        font-weight: 600;
+      }
+
+      .subtotal-row {
+        background-color: #f1f5f9;
+        border-top: 2px solid #e2e8f0;
+      }
+
+      .total-row td:first-child,
+      .subtotal-row td:first-child {
+        font-weight: 600;
+        padding-left: 15px;
+      }
+
+      .total-row td:last-child,
+      .subtotal-row td:last-child,
+      .total-row td:nth-last-child(2),
+      .subtotal-row td:nth-last-child(2) {
+        font-weight: 700;
+        color: #1e293b;
+      }
+
+      .total-row {
+        border-top: 2px solid #cbd5e1;
+      }
+    </style>
+  </head>
+  <body>
+    <header class="header">
+      <div class="container">
+        <div class="d-flex justify-content-between align-items-center">
+          <div>
+            <h1 class="mb-0">
+              <i class="fas fa-book me-3"></i>Manual Journal Entry
+            </h1>
+            <p class="mb-0">Create and manage journal entries</p>
+          </div>
+          <div>
+            <button class="btn btn-light me-2">
+              <i class="fas fa-sync-alt me-1"></i> Refresh
+            </button>
+            <button class="btn btn-light">
+              <i class="fas fa-cog me-1"></i> Settings
+            </button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="container container-narrow">
+      <a href="/manual_journal/Journal_entries.html" class="btn">
+        <i class="fas fa-arrow-left"></i> Back to Journals
+      </a>
+
+      <div class="card">
+        <div class="card-header">
+          <h3 class="mb-0">
+            <i class="fas fa-file-invoice me-2"></i>New Manual Journal
+          </h3>
+        </div>
+
+        <div class="card-body">
+          <!-- General Section -->
+          <div class="form-section">
+            <div class="section-title">
+              <i class="fas fa-cog"></i>
+              <span>General</span>
+            </div>
+            <p class="info-text">
+              Here you can enter the general information of the journal entry,
+              such as date, currency, and description.
+            </p>
+
+            <div class="row row-gap">
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label class="form-label" for="journalDate"
+                    >Date <span class="required-star">*</span></label
+                  >
+                  <input
+                    type="date"
+                    class="form-control"
+                    id="journalDate"
+                    value="2025-07-01"
+                  />
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label class="form-label" for="journalCurrency"
+                    >Currency <span class="required-star">*</span></label
+                  >
+                  <select class="form-select" id="journalCurrency">
+                    <option>US Dollar</option>
+                    <option>Euro</option>
+                    <option>British Pound</option>
+                    <option>Japanese Yen</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label class="form-label" for="journalDescription"
+                    >Description <span class="required-star">*</span></label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="journalDescription"
+                    placeholder="Enter Description"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Lines Section -->
+          <div class="form-section mt-4">
+            <div class="section-title">
+              <i class="fas fa-list"></i>
+              <span>Lines</span>
+            </div>
+            <p class="info-text">
+              Here you can enter the lines of the journal entry such as account,
+              debit, credit, etc.
+            </p>
+
+            <table class="journal-table">
+              <thead>
+                <tr>
+                  <th>Account</th>
+                  <th>Note</th>
+                  <th>Debit</th>
+                  <th>Credit</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <select class="form-select">
+                      <option selected disabled>- Select -</option>
+                      <option>Accounts Receivable</option>
+                      <option>Accounts Payable</option>
+                      <option>Sales Revenue</option>
+                      <option>Cost of Goods Sold</option>
+                      <option>Office Supplies</option>
+                    </select>
+                  </td>
+                  <td>
+                    <input
+                      type="text"
+                      class="form-control"
+                      placeholder="Enter"
+                    />
+                  </td>
+                  <td>
+                    <div class="debit-credit-input">
+                      <input
+                        type="number"
+                        class="form-control"
+                        value="0.00"
+                        min="0"
+                        step="0.01"
+                        onchange="calculateTotals()"
+                      />
+                    </div>
+                  </td>
+                  <td>
+                    <div class="debit-credit-input">
+                      <input
+                        type="number"
+                        class="form-control"
+                        value="0.00"
+                        min="0"
+                        step="0.01"
+                        onchange="calculateTotals()"
+                      />
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr class="subtotal-row">
+                  <td colspan="2">Subtotal</td>
+                  <td>$<span id="subtotal-debit">0.00</span></td>
+                  <td>$<span id="subtotal-credit">0.00</span></td>
+                </tr>
+                <tr class="total-row">
+                  <td colspan="2">Total</td>
+                  <td>$<span id="total-debit">0.00</span></td>
+                  <td>$<span id="total-credit">0.00</span></td>
+                </tr>
+              </tfoot>
+            </table>
+
+            <div class="add-line-btn" onclick="addNewLine()">
+              <i class="fas fa-plus me-2"></i> Add a Line
+            </div>
+          </div>
+
+          <!-- Other Section -->
+          <div class="form-section mt-4">
+            <div class="section-title">
+              <i class="fas fa-file-alt"></i>
+              <span>Other</span>
+            </div>
+            <p class="info-text">
+              Enter a number and reference to keep the journal entry linked to
+              your records.
+            </p>
+
+            <div class="row row-gap">
+              <div class="col-md-6">
+                <div class="number-ref-group">
+                  <div class="form-group">
+                    <label class="form-label" for="journalNumber"
+                      >Number <span class="required-star">*</span></label
+                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="journalNumber"
+                      value="NAE-00001"
+                    />
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label" for="journalReference"
+                      >Reference</label
+                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="journalReference"
+                      placeholder="Enter Reference"
+                    />
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="journalBook"
+                    >Book <span class="required-star">*</span></label
+                  >
+                  <select class="form-select" id="journalBook">
+                    <option selected>Accrual</option>
+                    <option>Cash</option>
+                    <option>Tax</option>
+                    <option>Management</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label class="form-label">Attachment</label>
+                  <div class="attachment-area">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    <p>Drop files here to upload</p>
+                    <small class="text-muted">or click to browse</small>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          
+
+          <!-- Action Buttons -->
+          <div class="btn-container">
+            <a
+              href="/manual_journal/Journal_entries.html"
+              class="btn btn-cancel"
+              >Cancel
+            </a>
+            <a href="/manual_journal/Journal_entries.html" class="btn btn-save"
+              >Save</a
+            >
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <footer class="app-footer">
+      <div class="container">
+        <div class="py-4 text-center">
+          <p class="mb-0">
+           Manual Journal • Updated today at 16:08
+          </p>
+        </div>
+      </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      // Initialize totals
+      document.addEventListener("DOMContentLoaded", function () {
+        calculateTotals();
+      });
+
+      // Add new line functionality
+      function addNewLine() {
+        const tableBody = document.querySelector(".journal-table tbody");
+        const newRow = document.createElement("tr");
+
+        newRow.innerHTML = `
+                <td>
+                    <select class="form-select">
+                        <option selected disabled>- Select -</option>
+                        <option>Accounts Receivable</option>
+                        <option>Accounts Payable</option>
+                        <option>Sales Revenue</option>
+                        <option>Cost of Goods Sold</option>
+                        <option>Office Supplies</option>
+                    </select>
+                </td>
+                <td>
+                    <input type="text" class="form-control" placeholder="Enter">
+                </td>
+                <td>
+                    <div class="debit-credit-input">
+                        <input type="number" class="form-control" value="0.00" min="0" step="0.01" onchange="calculateTotals()">
+                    </div>
+                </td>
+                <td>
+                    <div class="debit-credit-input">
+                        <input type="number" class="form-control" value="0.00" min="0" step="0.01" onchange="calculateTotals()">
+                    </div>
+                </td>
+            `;
+
+        tableBody.appendChild(newRow);
+      }
+
+      // Calculate totals
+      function calculateTotals() {
+        let totalDebit = 0;
+        let totalCredit = 0;
+
+        // Get all debit and credit inputs
+        const debitInputs = document.querySelectorAll(
+          ".debit-credit-input:nth-child(3) input"
+        );
+        const creditInputs = document.querySelectorAll(
+          ".debit-credit-input:nth-child(4) input"
+        );
+
+        // Calculate totals
+        debitInputs.forEach((input) => {
+          totalDebit += parseFloat(input.value) || 0;
+        });
+
+        creditInputs.forEach((input) => {
+          totalCredit += parseFloat(input.value) || 0;
+        });
+
+        // Update display
+        document.getElementById("subtotal-debit").textContent =
+          totalDebit.toFixed(2);
+        document.getElementById("subtotal-credit").textContent =
+          totalCredit.toFixed(2);
+        document.getElementById("total-debit").textContent =
+          totalDebit.toFixed(2);
+        document.getElementById("total-credit").textContent =
+          totalCredit.toFixed(2);
+      }
+
+      // Form validation
+      document
+        .querySelector(".btn-save")
+        .addEventListener("click", function () {
+          const date = document.getElementById("journalDate").value;
+          const currency = document.getElementById("journalCurrency").value;
+          const description =
+            document.getElementById("journalDescription").value;
+          const number = document.getElementById("journalNumber").value;
+          const book = document.getElementById("journalBook").value;
+
+          if (!date || !currency || !description || !number || !book) {
+            alert("Please fill in all required fields");
+            return;
+          }
+
+          // Check if at least one line has values
+          const debitInputs = document.querySelectorAll(
+            '.debit-credit-input input[type="number"]'
+          );
+          let hasValues = false;
+
+          debitInputs.forEach((input) => {
+            if (parseFloat(input.value) > 0) {
+              hasValues = true;
+            }
+          });
+
+          if (!hasValues) {
+            alert("Please add at least one journal line with an amount");
+            return;
+          }
+
+          // In a real app, this would submit the form
+          alert("Journal entry saved successfully!");
+        });
+
+      // Back button functionality
+      document
+        .querySelector(".back-link")
+        .addEventListener("click", function (e) {
+          e.preventDefault();
+          alert("Returning to Journals list");
+          // In a real app, this would navigate back
+        });
+
+      // Today's date for the date field
+      document.getElementById("journalDate").valueAsDate = new Date();
+    </script>
+  </body>
+</html>

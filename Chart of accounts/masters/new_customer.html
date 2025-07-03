@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Create New Customer</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <style>
+      :root {
+        --primary-color: #3a86ff;
+        --secondary-color: #ff006e;
+        --light-gray: #f8f9fa;
+        --border-color: #dee2e6;
+        --success-color: #10b981;
+        --warning-color: #f59e0b;
+        --danger-color: #ef4444;
+        --header-gradient: linear-gradient(135deg, #1e3a8a 0%, #3a86ff 100%);
+      }
+
+      body {
+        background-color: #f5f7fb;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        color: #334155;
+      }
+
+      .header {
+        background: var(--header-gradient);
+        color: white;
+        padding: 20px 0;
+        margin-bottom: 30px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+
+      .form-container {
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        padding: 30px;
+        max-width: 900px;
+        margin: 0 auto;
+      }
+
+      .section-title {
+        border-bottom: 2px solid var(--light-gray);
+        padding-bottom: 15px;
+        margin-bottom: 25px;
+        color: #1e3a8a;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .form-label {
+        font-weight: 600;
+        color: #334155;
+        margin-bottom: 8px;
+      }
+
+      .required::after {
+        content: " *";
+        color: var(--danger-color);
+      }
+
+      .form-control,
+      .form-select {
+        padding: 10px 15px;
+        border-radius: 8px;
+        border: 1px solid var(--border-color);
+        transition: all 0.3s;
+      }
+
+      .form-control:focus,
+      .form-select:focus {
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 4px rgba(58, 134, 255, 0.2);
+      }
+
+      .btn-cancel {
+        background-color: #f1f5f9;
+        color: #64748b;
+        border: none;
+        padding: 10px 25px;
+        border-radius: 8px;
+        font-weight: 600;
+        transition: all 0.3s;
+      }
+
+      .btn-cancel:hover {
+        background-color: #e2e8f0;
+        color: #1e293b;
+      }
+
+      .btn-save {
+        background-color: var(--primary-color);
+        color: white;
+        border: none;
+        padding: 10px 25px;
+        border-radius: 8px;
+        font-weight: 600;
+        transition: all 0.3s;
+      }
+
+      .btn-save:hover {
+        background-color: #2563eb;
+        transform: translateY(-2px);
+      }
+
+      .app-footer {
+        background-color: #f1f5f9;
+        padding: 15px 0;
+        color: #64748b;
+        font-size: 0.9rem;
+        margin-top: 30px;
+      }
+
+      .help-box {
+        background: white;
+        border-radius: 8px;
+        padding: 20px;
+        margin-top: 30px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      }
+
+      .help-box h4 {
+        font-weight: 600;
+        color: #1e293b;
+        margin-bottom: 15px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .chat-bubble {
+        background: #f0f5ff;
+        border-radius: 18px;
+        padding: 15px;
+        margin-top: 15px;
+        position: relative;
+      }
+
+      .chat-bubble::before {
+        content: "";
+        position: absolute;
+        top: -10px;
+        left: 20px;
+        border-left: 10px solid transparent;
+        border-right: 10px solid transparent;
+        border-bottom: 10px solid #f0f5ff;
+      }
+
+      .contact-person {
+        background: #f8fafc;
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 15px;
+        position: relative;
+        border: 1px solid #e0e7ff;
+      }
+
+      .remove-contact {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        color: var(--danger-color);
+        cursor: pointer;
+        background: none;
+        border: none;
+        font-size: 1.2rem;
+        transition: all 0.3s;
+      }
+
+      .remove-contact:hover {
+        transform: scale(1.2);
+      }
+
+      .btn-add-contact {
+        background: white;
+        border: 1px dashed var(--primary-color);
+        color: var(--primary-color);
+        padding: 12px 20px;
+        border-radius: 8px;
+        font-weight: 600;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        cursor: pointer;
+        transition: all 0.3s;
+      }
+
+      .btn-add-contact:hover {
+        background: #f0f5ff;
+      }
+
+      .form-hint {
+        color: #64748b;
+        font-size: 0.9rem;
+        margin-top: 8px;
+      }
+
+      .checkbox-group {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 15px;
+      }
+
+      .checkbox-group input {
+        width: 18px;
+        height: 18px;
+      }
+
+      @media (max-width: 768px) {
+        .form-container {
+          padding: 20px;
+        }
+
+        .row > div {
+          margin-bottom: 20px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="header">
+      <div class="container">
+        <div class="d-flex justify-content-between align-items-center">
+          <div>
+            <h1 class="mb-0">
+              <i class="fas fa-user-plus me-3"></i>New Customer
+            </h1>
+            <p class="mb-0">Add a new customer to your accounting system</p>
+          </div>
+          <div> <a href="customers.html" class="btn btn-light me-2"><i class="fas fa-arrow-left"></i> Back to Customers</a>
+            
+            <button class="btn btn-light">
+              <i class="fas fa-cog me-1"></i> Settings
+            </button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="container">
+      <div class="form-container">
+        <form id="customerForm">
+          <!-- General Information Section -->
+          <div>
+            <h3 class="section-title">
+              <i class="fas fa-info-circle"></i>
+              General Information
+            </h3>
+            <p class="text-muted mb-4">
+              Your client's contact information will appear in invoices and
+              their profiles.
+            </p>
+
+            <div class="row mb-4">
+              <div class="col-md-6">
+                <label for="customerName" class="form-label required"
+                  >Name</label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  id="customerName"
+                  placeholder="Enter Customer Name"
+                  required
+                />
+              </div>
+              <div class="col-md-6">
+                <label for="customerEmail" class="form-label">Email</label>
+                <input
+                  type="email"
+                  class="form-control"
+                  id="customerEmail"
+                  placeholder="Enter Email"
+                />
+              </div>
+            </div>
+
+            <div class="checkbox-group mb-4">
+              <input type="checkbox" id="inviteClient" />
+              <label for="inviteClient">Invite to Client Portal</label>
+            </div>
+
+            <div class="row mb-4">
+              <div class="col-md-6">
+                <label for="customerPhone" class="form-label">Phone</label>
+                <input
+                  type="tel"
+                  class="form-control"
+                  id="customerPhone"
+                  placeholder="Enter Phone Number"
+                />
+              </div>
+              <div class="col-md-6">
+                <label for="customerWebsite" class="form-label">Website</label>
+                <input
+                  type="url"
+                  class="form-control"
+                  id="customerWebsite"
+                  placeholder="https://example.com"
+                />
+              </div>
+            </div>
+
+            <div class="row mb-4">
+              <div class="col-md-6">
+                <label for="customerReference" class="form-label"
+                  >Reference</label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  id="customerReference"
+                  placeholder="Enter Reference"
+                />
+              </div>
+            </div>
+          </div>
+
+          <!-- Billing Information Section -->
+          <div>
+            <h3 class="section-title">
+              <i class="fas fa-file-invoice-dollar"></i>
+              Billing Information
+            </h3>
+            <p class="text-muted mb-4">
+              The tax number appears in every invoice issued to the customer.
+            </p>
+
+            <div class="row mb-4">
+              <div class="col-md-6">
+                <label for="customerTax" class="form-label">Tax Number</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="customerTax"
+                  placeholder="Enter Tax Number"
+                />
+              </div>
+              <div class="col-md-6">
+                <label for="customerCurrency" class="form-label required"
+                  >Currency</label
+                >
+                <select class="form-select" id="customerCurrency" required>
+                  <option value="" disabled selected>Select Currency</option>
+                  <option value="USD" selected>USD - US Dollar</option>
+                  <option value="EUR">EUR - Euro</option>
+                  <option value="GBP">GBP - British Pound</option>
+                  <option value="INR">INR - Indian Rupee</option>
+                  <option value="JPY">JPY - Japanese Yen</option>
+                </select>
+              </div>
+            </div>
+
+            <h4 class="mt-5 mb-3" style="color: #1e3a8a">
+              <i class="fas fa-map-marker-alt me-2"></i>
+              Address
+            </h4>
+
+            <div class="row mb-4">
+              <div class="col-md-6">
+                <label for="customerAddress" class="form-label">Address</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="customerAddress"
+                  placeholder="Enter Address"
+                />
+              </div>
+              <div class="col-md-6">
+                <label for="customerAddressFinder" class="form-label"
+                  >Address Finder</label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  id="customerAddressFinder"
+                  placeholder="Enter Address Finder"
+                />
+              </div>
+            </div>
+
+            <div class="row mb-4">
+              <div class="col-md-6">
+                <label for="customerCity" class="form-label">Town / City</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="customerCity"
+                  placeholder="Enter Town / City"
+                />
+              </div>
+              <div class="col-md-6">
+                <label for="customerState" class="form-label"
+                  >Province / State</label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  id="customerState"
+                  placeholder="Enter Province / State"
+                />
+              </div>
+            </div>
+
+            <div class="row mb-4">
+              <div class="col-md-6">
+                <label for="customerPostal" class="form-label"
+                  >Postal / Zip Code</label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  id="customerPostal"
+                  placeholder="Enter Postal / Zip Code"
+                />
+              </div>
+              <div class="col-md-6">
+                <label for="customerCountry" class="form-label">Country</label>
+                <select class="form-select" id="customerCountry">
+                  <option value="" disabled selected>Select Country</option>
+                  <option value="US">United States</option>
+                  <option value="GB">United Kingdom</option>
+                  <option value="IN" selected>India</option>
+                  <option value="CA">Canada</option>
+                  <option value="AU">Australia</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- Contact Persons Section -->
+          <div>
+            <h3 class="section-title">
+              <i class="fas fa-address-book"></i>
+              Contact Persons
+            </h3>
+            <p class="text-muted mb-4">
+              To include additional recipients in an email as CC, add them as
+              contact persons.
+            </p>
+
+            <div class="contact-person">
+              <button class="remove-contact">
+                <i class="fas fa-times-circle"></i>
+              </button>
+
+              <div class="row mb-4">
+                <div class="col-md-6">
+                  <label class="form-label">Name</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    placeholder="Enter Contact Name"
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Email</label>
+                  <input
+                    type="email"
+                    class="form-control"
+                    placeholder="Enter Contact Email"
+                  />
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-6">
+                  <label class="form-label">Phone</label>
+                  <input
+                    type="tel"
+                    class="form-control"
+                    placeholder="Enter Contact Phone"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <button type="button" class="btn-add-contact">
+              <i class="fas fa-plus me-2"></i> Add a Contact Person
+            </button>
+          </div>
+
+          <div class="d-flex justify-content-end gap-3 mt-5">
+            <button type="button" class="btn-cancel">
+              <i class="fas fa-times me-2"></i> Cancel
+            </button>
+            <button type="submit" class="btn-save">
+              <i class="fas fa-save me-2"></i> Create Customer
+            </button>
+          </div>
+        </form>
+      </div>
+    </main>
+
+    <footer class="app-footer">
+      <div class="container">
+        <div class="py-4 text-center">
+          New Customer • Updated today at 16:08
+        </div>
+      </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      // Form validation and submission
+      document
+        .getElementById("customerForm")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+
+          const customerName = document.getElementById("customerName").value;
+
+          if (!customerName) {
+            alert("Customer name is required!");
+            return;
+          }
+
+          // In a real application, this would send data to a server
+          alert(`Customer "${customerName}" created successfully!`);
+
+          // Reset form
+          this.reset();
+        });
+
+      // Cancel button functionality
+      document
+        .querySelector(".btn-cancel")
+        .addEventListener("click", function () {
+          if (
+            confirm(
+              "Are you sure you want to cancel? All unsaved changes will be lost."
+            )
+          ) {
+            window.location.href = "customers.html"; // Redirect to customers list
+          }
+        });
+
+      // Add contact person functionality
+      document
+        .querySelector(".btn-add-contact")
+        .addEventListener("click", function () {
+          const contactPerson = document
+            .querySelector(".contact-person")
+            .cloneNode(true);
+          contactPerson
+            .querySelectorAll("input")
+            .forEach((input) => (input.value = ""));
+          document
+            .querySelector(".contact-person")
+            .parentNode.insertBefore(contactPerson, this);
+
+          // Add event listener to remove button
+          contactPerson
+            .querySelector(".remove-contact")
+            .addEventListener("click", function () {
+              // Only remove if there's more than one contact
+              if (document.querySelectorAll(".contact-person").length > 1) {
+                this.closest(".contact-person").remove();
+              } else {
+                alert("At least one contact person is required.");
+              }
+            });
+        });
+
+      // Remove contact person functionality
+      document
+        .querySelector(".remove-contact")
+        .addEventListener("click", function () {
+          // Only remove if there's more than one contact
+          if (document.querySelectorAll(".contact-person").length > 1) {
+            this.closest(".contact-person").remove();
+          } else {
+            alert("At least one contact person is required.");
+          }
+        });
+
+      // Chat send functionality
+      document
+        .querySelector(".btn-primary")
+        .addEventListener("click", function () {
+          const message = document.querySelector(".form-control").value;
+          if (message.trim() !== "") {
+            alert(`Message sent: ${message}`);
+            document.querySelector(".form-control").value = "";
+          }
+        });
+
+      // Enable enter key for chat
+      document
+        .querySelector(".form-control")
+        .addEventListener("keypress", function (e) {
+          if (e.key === "Enter") {
+            document.querySelector(".btn-primary").click();
+          }
+        });
+    </script>
+  </body>
+</html>
